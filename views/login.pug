@@ -5,7 +5,6 @@ block content
     if error
         p.
             #{error}
-    a(href=actionCAS) CAS connection
     form(action=action, method="POST")
         input(type="hidden", name="_csrf", value=csrfToken)
         input(type="hidden", name="challenge", value=challenge)
@@ -25,3 +24,4 @@ block content
         br
         input(type="submit", id="accept", name="submit", value="Log in")
         input(type="submit", id="reject", name="submit", value="Deny access")
+        a(id="loginCAS" href=actionCAS) use CAS login instead

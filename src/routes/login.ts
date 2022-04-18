@@ -3,8 +3,9 @@ import url from 'url'
 import urljoin from 'url-join'
 import csrf from 'csurf'
 import { hydraAdmin } from '../config'
-import { casConfig } from '../cas/config'
 import { oidcConformityMaybeFakeAcr } from './stub/oidc-cert'
+
+
 
 // Sets up csrf protection
 const csrfProtection = csrf({ cookie: true })
@@ -48,7 +49,7 @@ router.get('/', csrfProtection, (req, res, next) => {
         csrfToken: req.csrfToken(),
         challenge: challenge,
         action: urljoin(process.env.BASE_URL || '', '/login'),
-	actionCAS: urljoin(casConfig.CAS_URL || '', '/login?service=' + encodeURIComponent((process.env.BASE_URL || '') + '/loginCAS')),
+        actionCAS: urljoin(process.env.BASE_URL || '', '/loginCAS?login_challenge=' + challenge),
         hint: body.oidc_context?.login_hint || ''
       })
     })
@@ -60,7 +61,8 @@ router.post('/', csrfProtection, (req, res, next) => {
   // The challenge is now a hidden input field, so let's take it from the request body instead
   const challenge = req.body.challenge
 
-  // Let's see if the user decided to accept or reject the consent request..
+  // Let's see if the user decided to accept or reject the consent request
+
   if (req.body.submit === 'Deny access') {
     // Looks like the consent request was denied by the user
     return (
@@ -141,5 +143,8 @@ router.post('/', csrfProtection, (req, res, next) => {
   //   // This will handle any error that happens when making HTTP calls to hydra
   //   .catch(next);
 })
+
+
+
 
 export default router
