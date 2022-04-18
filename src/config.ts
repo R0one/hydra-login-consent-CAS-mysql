@@ -1,4 +1,4 @@
-import { AdminApi, Configuration } from '@oryd/hydra-client'
+import { AdminApi, Configuration } from '@ory/hydra-client'
 
 const baseOptions: any = {}
 

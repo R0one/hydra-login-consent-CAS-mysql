@@ -4,7 +4,7 @@ import urljoin from 'url-join'
 import csrf from 'csurf'
 import { hydraAdmin } from '../config'
 import { oidcConformityMaybeFakeSession } from './stub/oidc-cert'
-import { ConsentRequestSession } from '@oryd/hydra-client'
+import { ConsentRequestSession } from '@ory/hydra-client'
 
 // Sets up csrf protection
 const csrfProtection = csrf({ cookie: true })
