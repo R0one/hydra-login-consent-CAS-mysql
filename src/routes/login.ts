@@ -3,6 +3,7 @@ import url from 'url'
 import urljoin from 'url-join'
 import csrf from 'csurf'
 import { hydraAdmin } from '../config'
+import { casConfig } from '../cas/config'
 import { oidcConformityMaybeFakeAcr } from './stub/oidc-cert'
 
 // Sets up csrf protection
@@ -47,6 +48,7 @@ router.get('/', csrfProtection, (req, res, next) => {
         csrfToken: req.csrfToken(),
         challenge: challenge,
         action: urljoin(process.env.BASE_URL || '', '/login'),
+	actionCAS: urljoin(casConfig.CAS_URL || '', '/login?service=' + encodeURIComponent((process.env.BASE_URL || '') + '/loginCAS')),
         hint: body.oidc_context?.login_hint || ''
       })
     })

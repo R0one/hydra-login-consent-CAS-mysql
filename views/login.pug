@@ -5,6 +5,7 @@ block content
     if error
         p.
             #{error}
+    a(href=actionCAS) CAS connection
     form(action=action, method="POST")
         input(type="hidden", name="_csrf", value=csrfToken)
         input(type="hidden", name="challenge", value=challenge)
