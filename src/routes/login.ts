@@ -8,7 +8,6 @@ import csrf from "csurf"
 import { hydraAdmin } from "../config"
 import { oidcConformityMaybeFakeAcr } from './stub/oidc-cert'
 
-import { casConfig } from "../cas/config"
 
 // Sets up csrf protection
 const csrfProtection = csrf({
@@ -56,7 +55,7 @@ router.get("/", csrfProtection, (req, res, next) => {
         csrfToken: req.csrfToken(),
         challenge: challenge,
         action: urljoin(process.env.BASE_URL || "", "/login"),
-	    actionCAS: urljoin(casConfig.CAS_URL || "", "/login?service=" + encodeURIComponent((process.env.BASE_URL || '') + "/loginCAS")),
+        actionCAS: urljoin(process.env.BASE_URL || "", "/loginCAS?login_challenge=" + challenge),
         hint: body.oidc_context?.login_hint || ""
       })
     })
@@ -149,5 +148,8 @@ router.post("/", csrfProtection, (req, res, next) => {
   //   // This will handle any error that happens when making HTTP calls to hydra
   //   .catch(next);
 })
+
+
+
 
 export default router
