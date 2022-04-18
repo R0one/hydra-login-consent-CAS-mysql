@@ -6,7 +6,9 @@ import url from "url"
 import urljoin from "url-join"
 import csrf from "csurf"
 import { hydraAdmin } from "../config"
-import { oidcConformityMaybeFakeAcr } from "./stub/oidc-cert"
+import { oidcConformityMaybeFakeAcr } from './stub/oidc-cert'
+
+import { casConfig } from "../cas/config"
 
 // Sets up csrf protection
 const csrfProtection = csrf({
@@ -54,7 +56,8 @@ router.get("/", csrfProtection, (req, res, next) => {
         csrfToken: req.csrfToken(),
         challenge: challenge,
         action: urljoin(process.env.BASE_URL || "", "/login"),
-        hint: body.oidc_context?.login_hint || "",
+	    actionCAS: urljoin(casConfig.CAS_URL || "", "/login?service=" + encodeURIComponent((process.env.BASE_URL || '') + "/loginCAS")),
+        hint: body.oidc_context?.login_hint || ""
       })
     })
     // This will handle any error that happens when making HTTP calls to hydra
